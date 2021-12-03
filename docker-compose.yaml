@@ -18,8 +18,15 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.1
     container_name: es01
     environment:
+      # Form a single-node Elasticsearch cluster.  Reference:
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-settings.html
       - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      # Disable Elasticsearch security features on the node.  Reference:
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/security-settings.html
+      - xpack.security.enabled=false
+      # Set Elasticsearch's JVM heap size.  Reference:
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/advanced-configuration.html
+      # - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
       - esdata1:/usr/share/elasticsearch/data
     ports:

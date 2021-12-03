@@ -50,18 +50,18 @@ There is a command contained in the [docker compose](docker-compose.yaml) file w
 Start the system with:
 
 ```sh
-docker-compose up
+docker compose up
 ```
 
 This will create the Docker containers, network, and volumes.  To close the system, first break with control-c, then run
 
 ```sh
-docker-compose down
+docker compose down
 ```
 
 That will remove the Docker containers and network, but not the volumes.
 
-Once the volumes have been created and data has been inserted into them by the first `docker-compose` run, it is possible to run the container with that same volume, and examine its contents.
+Once the volumes have been created and data has been inserted into them by the first `docker compose` run, it is possible to run the container with that same volume, and examine its contents.
 To do so, run the Docker container using the [provided script](runrally.sh), which will open a bash shell in an `openfda_rally` container:
 
 ```sh
@@ -96,7 +96,7 @@ When a change has been made to the track under development, it will need to be c
 docker volume prune
 ```
 
-Then rebuild the `openfda_rally` image, which will copy the track to a temporary locaiton in the Docker image.  Running `docker-compose up` will start a container which will put the files into the correct location on the Docker volume. 
+Then rebuild the `openfda_rally` image, which will copy the track to a temporary locaiton in the Docker image.  Running `docker compose up` will start a container which will put the files into the correct location on the Docker volume. 
 
 
 ## Default Example Track:  Camden Council Demo
