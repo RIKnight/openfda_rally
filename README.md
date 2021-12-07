@@ -85,7 +85,23 @@ docker exec -it <CONTAINER ID> /bin/bash
 From within the container, commands such as `esrally list track`, for listing the known tracks, can be executed.
 
 
-## Developing new Tracks
+<!-- Benchmarking -->
+## Benchmarking
+
+### About Rally Pipelines
+
+In Rally, a construct called a [pipeline](https://esrally.readthedocs.io/en/stable/pipelines.html) is used to control what steps are performed before and after a benchmarking exercise.  In this project, we intend to use the `benchmark-only` pipeline, which omits the steps before and after benchmarking.  This was chosen due to the complex nature of the openFDA Elasticsearch indexing.  
+
+To use this setup, the openFDA system under study must be configured to store Elasticsearch data on a Docker volume which can be shared with this benchmarking system.  In order to do so, the `docker-compose.yaml` files which set up both the openfda_rally system and the openFDA system itself should be modified to use named Docker volumes, and have the names match each other.  There is an included [docker-compose.yml](openfda/docker-compose.yml) file in this repo which can be used for configuring openFDA this way.  Note that the volume name (openfda_esdata) is the same name used in this project's [docker-compose.yaml](docker-compose.yaml) file.
+
+### Default Example Track:  Camden Council Demo
+
+In Rally, tracks are stored as git repositories, in order to help promote compatibility across different versions of Elasticsearch.  To be conistent with this framework, the example track used by default in this system is stored in a different repository.  See the [Camden Demo](https://github.com/RIKnight/camden_demo.git) repo for more information.
+
+There are two different Rally "challenges" stored in this demo track.  To select which one runs, uncomment the appropriate line in this repo's [docker compose](docker-compose.yaml) file.
+
+
+### Developing new Tracks
 
 New tracks under development can be placed in subdirectories of the `tracks` directory.
 See the `camden_demo` references throughout the files in this repo and the Camden Demo Track repo for an example of how to set this up.
@@ -99,11 +115,14 @@ docker volume prune
 Then rebuild the `openfda_rally` image, which will copy the track to a temporary locaiton in the Docker image.  Running `docker compose up` will start a container which will put the files into the correct location on the Docker volume. 
 
 
-## Default Example Track:  Camden Council Demo
+### Benchmarking with openFDA data
 
-In Rally, tracks are stored as git repositories, in order to help promote compatibility across different versions of Elasticsearch.  To be conistent with this framework, the example track used by default in this system is stored in a different repository.  See the [Camden Demo](https://github.com/RIKnight/camden_demo.git) repo for more information.
+This sytem runs Rally using the `benchmark-only` pipeline, and relies on a different system (openFDA) to index and populate an Elasticsearch data store with data, prior to running the Rally tracks (see above).  Once a Docker volume has been created, and data has been indexed and inserted, the volume can be used with this system to do Elasticsearch benchmarking.
 
-There are two different Rally "challenges" stored in this demo track.  To select which one runs, uncomment the appropriate line in this repo's [docker compose](docker-compose.yaml) file.
+
+## Retrieving Rally Race Results
+
+After a Rally race, a summary of the race results are printed to the terminal which launched the race.  Furthermore, the full results of the benchmarking track are stored in the Docker volume which was used when running the Rally race, in `json` format.  After the race has completed, the Docker container will stop running.  A new container can be started which uses the same Docker volume using the script `runrally.sh`.  This script will run an interactive bash shell in a container which has access to the volume, and will be capable of reading the race results.
 
 
 <!-- PROJECT ORGANIZATION -->
@@ -127,8 +146,11 @@ There are two different Rally "challenges" stored in this demo track.  To select
     │
     ├── runrally.sh          <- A convenience script for starting an openfda_rally container after initialization
     │
-    ├── tracks               <- A directory for developing new tracks.  
-    |                           New tracks should be placed inside of a subdirectory of this folder.
+    ├── openfda              <- A directory for example openFDA files.
+    │    └──  docker-compose.yml <- A sample compose file for openFDA. 
+    │
+    └── tracks               <- A directory for developing new tracks.  
+                                New tracks should be placed inside of a subdirectory of this folder.
 
 
 <!-- ACKNOWLEDGEMENTS -->

@@ -45,5 +45,6 @@ networks:
 volumes:
   esdata1:
     driver: local
+    name: openfda_esdata
   rally:
     driver: local
