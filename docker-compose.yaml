@@ -5,8 +5,13 @@ services:
     container_name: rally
     # pick one command
     # command: esrally list tracks
-    command: esrally race --track=companies --pipeline=benchmark-only --target-hosts=es01:9200 --challenge=unscored-challenge --track-repository=camden_demo --offline
+    #
+    # command: esrally race --track=companies --pipeline=benchmark-only --target-hosts=es01:9200 --challenge=unscored-challenge --track-repository=camden_demo --offline
     # command: esrally race --track=companies --pipeline=benchmark-only --target-hosts=es01:9200 --challenge=scored-challenge --track-repository=camden_demo --offline
+    #
+    command: esrally race --track=foodevent --pipeline=benchmark-only --target-hosts=es01:9200 --challenge=query-gender --track-repository=openfda_testing --offline
+    #command: esrally race --track=foodevent --pipeline=benchmark-only --target-hosts=es01:9200 --challenge=query-age --track-repository=openfda_testing --offline
+    #command: esrally race --track=foodevent --pipeline=benchmark-only --target-hosts=es01:9200 --challenge=query-both --track-repository=openfda_testing --offline
     volumes:
       - rally:/rally/.rally
     networks:
@@ -48,3 +53,4 @@ volumes:
     name: openfda_esdata
   rally:
     driver: local
+    name: rally_data

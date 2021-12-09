@@ -144,8 +144,12 @@ After a Rally race, a summary of the race results are printed to the terminal wh
     ├── rally.ini            <- An initialization file for rally.  Currently, this file is not used.
     |                           It is included here only as a placeholder for future development.
     │
-    ├── runrally.sh          <- A convenience script for starting an openfda_rally container after initialization
+    ├── runelasticsearch.sh  <- A convenience script for starting an interactive shell in an elasticsearch container after initialization.
+    |                           Note that the entrypoint is /bin/bash rather than the usual startup script.
     │
+    ├── runrally.sh          <- A convenience script for starting an interactive shell in an openfda_rally container after initialization.
+    |                           Note that the entrypoint is /bin/bash rather than the usual startup script.
+    |
     ├── openfda              <- A directory for example openFDA files.
     │    └──  docker-compose.yml <- A sample compose file for openFDA. 
     │
