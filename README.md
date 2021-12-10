@@ -19,7 +19,8 @@ Currently, this project is configured (in the [docker compose file](docker-compo
 ### Dependencies
 
 * [Docker](https://www.docker.com/) - Everything runs inside Docker containers.
-* [Camden Demo](https://github.com/RIKnight/camden_demo.git) - An example track based on data from Camden Council.
+* [Camden Demo](https://github.com/RIKnight/camden_demo) - An example track based on data from Camden Council.
+* [openFDA Testing](https://github.com/RIKnight/openfda_testing) - A track which can be used for testing the connection between Rally and the openFDA Elasticsearch container.
 
 
 <!-- GETTING STARTED -->
@@ -41,7 +42,7 @@ Copy this repository to your local system.  Then, from the root directory of the
 ```
 This will build (or completely re-build) the image and give it the name `openfda_rally`.
 
-The Rally image will be ... (under construction)
+This should be done prior to running the `docker compose up` command which launches the whole system.
 
 ### Starting the containers
 
@@ -61,28 +62,27 @@ docker compose down
 
 That will remove the Docker containers and network, but not the volumes.
 
-Once the volumes have been created and data has been inserted into them by the first `docker compose` run, it is possible to run the container with that same volume, and examine its contents.
-To do so, run the Docker container using the [provided script](runrally.sh), which will open a bash shell in an `openfda_rally` container:
+
+### Interacting via the command line
+
+Once the docker volumes have been created and data has been inserted into them by the first `docker compose` run, it is possible to run each of the containers in the system with their same volumes, and examine their contents.  
+
+Included are two shortcut scripts to interactively run the Elasticsearch and Rally containers (separately) in a bash shell.
+
+To run the Rally container in an interactive bash shell, run the provided [script](runrally.sh), which will open a bash shell in an `openfda_rally` container:
 
 ```sh
 ./runrally.sh
 ```
 
-### Interacting via the command line
-
-In a terminal, find the docker container ID with:
-
-```sh
-docker ps
-```
-
-Look for the container ID for image `openfda_rally`.  It will look something like `788b940d8616`, for example.  To enter the container:
-
-```sh
-docker exec -it <CONTAINER ID> /bin/bash
-```
-
 From within the container, commands such as `esrally list track`, for listing the known tracks, can be executed.
+
+Similarly, the Elasticsearch container can be run with the [script](runelasticsearch.sh):
+
+
+```sh
+./runelasticsearch.sh
+```
 
 
 <!-- Benchmarking -->
@@ -112,7 +112,7 @@ When a change has been made to the track under development, it will need to be c
 docker volume prune
 ```
 
-Then rebuild the `openfda_rally` image, which will copy the track to a temporary locaiton in the Docker image.  Running `docker compose up` will start a container which will put the files into the correct location on the Docker volume. 
+Then rebuild the `openfda_rally` image, which will copy the track to a temporary location in the Docker image.  Running `docker compose up` will start a container which will put the files into the correct location on the Docker volume. 
 
 
 ### Benchmarking with openFDA data
