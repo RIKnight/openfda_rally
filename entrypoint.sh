@@ -21,7 +21,7 @@ if [[ "$*" =~ "camden_demo" ]]; then
     fi
 elif [[ "$*" =~ "openfda_testing" ]]; then
     echo "openfda_testing repository selected"
-    if [[ ! -f "openfda_testing" ]]; then
+    if [[ ! -d "openfda_testing" ]]; then
         git clone https://github.com/RIKnight/openfda_testing.git
     fi
 else
